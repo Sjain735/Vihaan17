@@ -143,10 +143,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d(TAG, "onBeaconsDiscovered: prev set once");
             } else if (bIDs.get(list.get(0).getMajor())!=prev){
                 Log.d(TAG, "onBeaconsDiscovered: next set and prev updated");
-
+/*
                 if (bIDs.get(list.get(0).getMajor())==1)
                     dialog = "You are near beacon number " + nearestBeacon;
-                else
+                else*/
                     dialog = "You are near beacon number " + nearestBeacon;
 
                     prev=next;
@@ -160,9 +160,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void checkDirection(int diff) {
-        if(diff==1) {
+        if(diff>0) {
             giveUpdate(true); //next dir
-        } else {
+        } else if (diff<0) {
             giveUpdate(false); //wrong dir
         }
     }
@@ -194,9 +194,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void speakOut(boolean isRight) {
         if (isRight) {
-            textToSpeech.speak(String.valueOf(R.string.right_path), TextToSpeech.QUEUE_ADD, null);
+            textToSpeech.speak("You are on the right path to the gate.", TextToSpeech.QUEUE_ADD, null);
         } else {
-            textToSpeech.speak(String.valueOf(R.string.wrong_path), TextToSpeech.QUEUE_ADD, null);
+            textToSpeech.speak("Moving in wrong direction", TextToSpeech.QUEUE_ADD, null);
             Vibrator vibrate = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
             long[] pattern = {0, 1000, 500, 1000, 800, 1000};
             vibrate.vibrate(pattern, -1);

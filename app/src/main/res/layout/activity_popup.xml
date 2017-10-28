@@ -10,7 +10,7 @@
 
 <TextView
     android:id="@+id/tvNotific"
-    android:text="text"
+    android:text="@string/right_path"
     android:textAppearance="?android:textAppearanceMedium"
     android:gravity="center"
     android:padding="6dp"
