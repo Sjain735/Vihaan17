@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">A.BLE</string>
+
+    <string name="right_path">You are on the right path to the gate. Move to your right.</string>
+    <string name="wrong_path">Moving in wrong direction</string>
+
 </resources>

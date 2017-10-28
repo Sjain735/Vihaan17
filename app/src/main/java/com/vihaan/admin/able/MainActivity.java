@@ -47,15 +47,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         statusBar();
 
-//        tvBc = (TextView) findViewById(R.id.tv_bc);
-
-        dialog = "You are near baggage counter. ";
-
+        dialog = "You are just beginning.";
 
         beaconManager = new BeaconManager(this);
 
         beaconManager.setRangingListener(this);
         beaconManager.setMonitoringListener(this);
+
         bIDs = new HashMap<>();
         bIDs.put(5,1);
         bIDs.put(20974,2);
@@ -119,8 +117,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onEnteredRegion(Region region, List<Beacon> list) {
         Log.i("TAG","Enter"+region.getMajor()+" "+list.size()+" "+list.get(0).getMajor());
-
-
     }
 
     @Override
@@ -139,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if(list.get(0).getMajor()==5 || list.get(0).getMajor()==20974 || list.get(0).getMajor()==3) {
                 nearestBeacon = bIDs.get(list.get(0).getMajor());
-                tvTemp.setText("Nearest Beacon = " + nearestBeacon);
+                tvTemp.setText("Nearest Beacon Id: " + nearestBeacon);
             }
 
             if (prev==0) {
@@ -149,9 +145,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d(TAG, "onBeaconsDiscovered: next set and prev updated");
 
                 if (bIDs.get(list.get(0).getMajor())==1)
-                    dialog = "You are near baggage counter. ";
+                    dialog = "You are near beacon number " + nearestBeacon;
                 else
-                    dialog = "Find the latest collection of clothes on the Airport Mall on your right!";
+                    dialog = "You are near beacon number " + nearestBeacon;
 
                     prev=next;
                     next=bIDs.get(list.get(0).getMajor());
@@ -198,13 +194,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void speakOut(boolean isRight) {
         if (isRight) {
-            textToSpeech.speak("You are on the right path to the gate. Move to your right.", TextToSpeech.QUEUE_ADD, null);
+            textToSpeech.speak(String.valueOf(R.string.right_path), TextToSpeech.QUEUE_ADD, null);
         } else {
-            textToSpeech.speak("Moving in wrong direction", TextToSpeech.QUEUE_ADD, null);
+            textToSpeech.speak(String.valueOf(R.string.wrong_path), TextToSpeech.QUEUE_ADD, null);
             Vibrator vibrate = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
             long[] pattern = {0, 1000, 500, 1000, 800, 1000};
             vibrate.vibrate(pattern, -1);
-
         }
     }
 
@@ -226,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN && countVolDown >=3){
-
             textToSpeech.speak("Speak after beep sound ",TextToSpeech.QUEUE_FLUSH, null);
             displaySpeechRecognizer();
             countVolDown =0;
@@ -274,8 +268,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
             }
-
-
 
         }
         super.onActivityResult(requestCode, resultCode, data);
